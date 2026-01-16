@@ -16,4 +16,17 @@ final class NetworkManager: UIViewController {
             }
         }.resume()
     }
+    
+    private func toParseImage(from url: URL, completion: @escaping (Result<Data, MyErrors>) -> Void) {
+        DispatchQueue.global().async {
+            guard let imageData = try? Data(contentsOf: url) else {
+                completion(.failure(.Error))
+                return
+            }
+            DispatchQueue.main.async {
+                completion(.success(imageData))
+            }
+            
+        }
+    }
 }
