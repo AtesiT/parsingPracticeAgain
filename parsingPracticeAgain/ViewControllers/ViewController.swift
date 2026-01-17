@@ -4,6 +4,8 @@ final class ViewController: UIViewController {
     
     let networkManager = NetworkManager.shared
     
+    //  MARK: - Buttons
+    
     private lazy var parseJSONButton: UIButton = {
         let parseJSONButton = FilledButtonFactory(
             title: "Take Data",
@@ -26,10 +28,31 @@ final class ViewController: UIViewController {
         return sendJSONButton.createButton()
     }()
     
+    private lazy var parseImageButton: UIButton = {
+        let parseImageButton = FilledButtonFactory(
+            title: "Take Image",
+            color: .gray,
+            action: UIAction { [unowned self] _ in
+            }
+        )
+        return parseImageButton.createButton()
+    }()
+    
+    //  MARK: - View
+    
+    private lazy var theImage: UIImageView = {
+        let theImage = UIImageView()
+        theImage.backgroundColor = .white
+        theImage.translatesAutoresizingMaskIntoConstraints = false
+        return theImage
+    }()
+    
+    //  MARK: - viewDidLoad()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemGreen
-        setElements(parseJSONButton, sendJSONButton)
+        setElements(parseJSONButton, sendJSONButton, parseImageButton, theImage)
         setConstraints()
     }
 
@@ -59,6 +82,10 @@ private extension ViewController {
             }
         }
     }
+    
+    func parseJSONToWeb() {
+        return
+    }
 }
 
 //  MARK: - Constraints and Set Buttons
@@ -78,6 +105,15 @@ private extension ViewController {
             sendJSONButton.topAnchor.constraint(equalTo: parseJSONButton.topAnchor, constant: 40),
             sendJSONButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             sendJSONButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            parseImageButton.topAnchor.constraint(equalTo: sendJSONButton.topAnchor, constant: 40),
+            parseImageButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            parseImageButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            theImage.topAnchor.constraint(equalTo: parseImageButton.topAnchor, constant: 120),
+            theImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            theImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            theImage.bottomAnchor.constraint(equalTo: parseImageButton.topAnchor, constant: 480)
         ])
     }
 }
