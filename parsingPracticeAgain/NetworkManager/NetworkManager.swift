@@ -40,6 +40,7 @@ final class NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = serializedData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data, let response else {
@@ -47,6 +48,7 @@ final class NetworkManager {
                 return
             }
             do {
+                print(response)
                 let json = try JSONSerialization.jsonObject(with: data)
                 completion(.success(json))
             } catch {
