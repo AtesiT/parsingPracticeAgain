@@ -33,6 +33,7 @@ final class ViewController: UIViewController {
             title: "Take Image",
             color: .gray,
             action: UIAction { [unowned self] _ in
+                parseImageFromWeb()
             }
         )
         return parseImageButton.createButton()
@@ -83,8 +84,15 @@ private extension ViewController {
         }
     }
     
-    func parseJSONToWeb() {
-        return
+    func parseImageFromWeb() {
+        networkManager.toParseImage(from: Links.imageTakeURL.url) { result in
+            switch result {
+            case .success(let imageData):
+                self.theImage.image = UIImage(data: imageData)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 
