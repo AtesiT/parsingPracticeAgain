@@ -1,6 +1,11 @@
 import UIKit
 
-final class NetworkManager: UIViewController {
+final class NetworkManager {
+    
+    static let shared = NetworkManager()
+    
+    private init() {}
+    
     private func toParseData(from url: URL, data: Data, completion: @escaping (Result<Data, Error>) -> Void) {
         URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data else {
