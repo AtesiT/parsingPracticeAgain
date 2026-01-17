@@ -6,14 +6,14 @@ final class NetworkManager {
     
     private init() {}
     
-    private func toParseData(from url: URL, data: Data, completion: @escaping (Result<Data, Error>) -> Void) {
+    func toParseData(from url: URL, completion: @escaping (Result<TheInfo, Error>) -> Void) {
         URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data else {
                 print(error?.localizedDescription ?? "Nothing")
                 return
             }
             do {
-                let dataJSON = try JSONDecoder().decode(Data.self, from: data)
+                let dataJSON = try JSONDecoder().decode(TheInfo.self, from: data)
                 completion(.success(dataJSON))
             } catch {
                 print(error)
@@ -22,7 +22,7 @@ final class NetworkManager {
         }.resume()
     }
     
-    private func toParseImage(from url: URL, completion: @escaping (Result<Data, MyErrors>) -> Void) {
+    func toParseImage(from url: URL, completion: @escaping (Result<Data, MyErrors>) -> Void) {
         DispatchQueue.global().async {
             guard let imageData = try? Data(contentsOf: url) else {
                 completion(.failure(.Error))
@@ -34,7 +34,7 @@ final class NetworkManager {
         }
     }
     
-    private func toSendData(with parameters: [String:Any], to url: URL, completion: @escaping(Result<Any,MyErrors>) -> Void) {
+    func toSendData(with parameters: [String:Any], to url: URL, completion: @escaping(Result<Any,MyErrors>) -> Void) {
         let serializedData = try? JSONSerialization.data(withJSONObject: parameters)
         
         var request = URLRequest(url: url)
