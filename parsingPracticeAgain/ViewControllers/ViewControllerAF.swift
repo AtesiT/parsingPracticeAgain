@@ -15,10 +15,21 @@ final class ViewControllerAF: UIViewController {
         return getJSONButton.createButton()
     }()
     
+    private lazy var postJSONButton: UIButton = {
+        let postJSONButton = FilledButtonFactory(
+            title: "Post JSON",
+            color: .green,
+            action: UIAction { [unowned self] _ in
+                postJSON()
+            }
+        )
+        return postJSONButton.createButton()
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        setElements(getJSONButton)
+        setElements(getJSONButton, postJSONButton)
         setConstrains()
     }
     
@@ -32,6 +43,17 @@ final class ViewControllerAF: UIViewController {
             }
         }
     }
+    
+    func postJSON() {
+        networkManagerAF.sendJSON(to: Links.dataSendURL.url, with: parametersFromStruct) { [unowned self] result in
+            switch result {
+            case .success(let data):
+                print(data)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
 
 private extension ViewControllerAF {
@@ -40,6 +62,10 @@ private extension ViewControllerAF {
             getJSONButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
             getJSONButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             getJSONButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            postJSONButton.topAnchor.constraint(equalTo: getJSONButton.topAnchor, constant: 40),
+            postJSONButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            postJSONButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
     }
     
@@ -48,4 +74,8 @@ private extension ViewControllerAF {
             view.addSubview(theView)
         }
     }
+}
+
+#Preview {
+    ViewControllerAF()
 }
